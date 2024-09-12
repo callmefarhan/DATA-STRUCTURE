@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct searchtree {
+    int element;
+    struct searchtree *left, *right;
+};
+
+typedef struct searchtree *node;
+
+node insert(int, node);
+node findmin(node);
+node findmax(node);
+void inorder(node);
+void makeempty();
+
+// Global root node
+node root = NULL;
+
+int main() {
+    int choice, val;
+    while(1) {
+        printf("\n1. Insert\n2. Display (Inorder)\n3. Find min\n4. Find max\n5. Exit\nEnter Your Choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                printf("Enter element to insert: ");
+                scanf("%d", &val);
+                root = insert(val, root);
+                break;
+            case 2:
+                if (root == NULL)
+                    printf("Tree is empty\n");
+                else
+                    inorder(root);
+                break;
+            case 3:
+                if (root == NULL)
+                    printf("Tree is empty\n");
+                else
+                    printf("Minimum element: %d\n", findmin(root)->element);
+                break;
+            case 4:
+                if (root == NULL)
+                    printf("Tree is empty\n");
+                else
+                    printf("Maximum element: %d\n", findmax(root)->element);
+                break;
+            case 5:
+                exit(0);
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+    return 0;
+}
+
+// Function to insert an element into the tree
+node insert(int x, node t) {
+    if (t == NULL) {
+        t = (node)malloc(sizeof(struct searchtree));
+        t->element = x;
+        t->left = t->right = NULL;
+    } else if (x < t->element) {
+        t->left = insert(x, t->left);
+    } else if (x > t->element) {
+        t->right = insert(x, t->right);
+    }
+    return t;
+}
+
+// Function to find the minimum element in the tree
+node findmin(node t) {
+    if (t == NULL)
+        return NULL;
+    if (t->left == NULL)
+        return t;
+    return findmin(t->left);
+}
+
+// Function to find the maximum element in the tree
+node findmax(node t) {
+    if (t == NULL)
+        return NULL;
+    if (t->right == NULL)
+        return t;
+    return findmax(t->right);
+}
+
+// Inorder traversal of the tree
+void inorder(node t) {
+    if (t != NULL) {
+        inorder(t->left);
+        printf("%d ", t->element);
+        inorder(t->right);
+    }
+}
