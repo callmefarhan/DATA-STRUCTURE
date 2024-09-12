@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 5
+
+// Stack structure
+static int stack[MAX];
+int top = -1;
+
+// Function to push an element onto the stack
+void push(int x) {
+    if (top < MAX - 1) {
+        stack[++top] = x;
+        printf("\n%d pushed to stack\n", x);
+    } else {
+        printf("\nStack Overflow\n");
+    }
+}
+
+// Function to pop an element from the stack
+int pop() {
+    if (top >= 0) {
+        return stack[top--];
+    } else {
+        printf("\nStack Underflow\n");
+        return -1; // Return an invalid value
+    }
+}
+
+// Function to view the elements in the stack
+void view() {
+    if (top < 0) {
+        printf("\nStack Empty\n");
+    } else {
+        printf("\nStack elements (top --> bottom):\n");
+        for (int i = top; i >= 0; i--) {
+            printf("%d ", stack[i]);
+        }
+        printf("\n");
+    }
+}
+
+// Main function to drive the stack operations
+int main() {
+    int choice = 0, val;
+
+    while (choice != 4) {
+        printf("\nSTACK OPERATIONS\n");
+        printf("1. PUSH\n");
+        printf("2. POP\n");
+        printf("3. VIEW\n");
+        printf("4. QUIT\n");
+        printf("Enter Choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter Stack element: ");
+                scanf("%d", &val);
+                push(val);
+                break;
+            case 2:
+                val = pop();
+                if (val != -1) {
+                    printf("Popped element is %d\n", val);
+                }
+                break;
+            case 3:
+                view();
+                break;
+            case 4:
+                printf("Exiting...\n");
+                exit(0);
+            default:
+                printf("\nInvalid Choice\n");
+        }
+    }
+    return 0;
+}
