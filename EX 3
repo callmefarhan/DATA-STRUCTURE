@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX 20
+
+int top = -1;
+char stack[MAX];
+
+int prcd(char c) {
+    return (c == '+' || c == '-') ? 2 : (c == '*' || c == '/') ? 4 : (c == '^' || c == '$') ? 6 : (c == '(' || c == ')' || c == '#') ? 1 : 0;
+}
+
+int isop(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '$' || c == '(' || c == ')');
+}
+
+void push(char c) {
+    stack[++top] = c;
+}
+
+char pop() {
+    return stack[top--];
+}
+
+void convert(char in[], char post[]) {
+    int i, j = 0;
+    push('#');
+    for (i = 0; in[i]; i++) {
+        if (!isop(in[i])) {
+            post[j++] = in[i];
+        } else {
+            if (in[i] == '(') {
+                push(in[i]);
+            } else if (in[i] == ')') {
+                while (stack[top] != '(') {
+                    post[j++] = pop();
+                }
+                pop();
+            } else {
+                while (prcd(in[i]) <= prcd(stack[top])) {
+                    post[j++] = pop();
+                }
+                push(in[i]);
+            }
+        }
+    }
+    while (stack[top] != '#') {
+        post[j++] = pop();
+    }
+    post[j] = '\0';
+}
+
+int main() {
+    char in[20], post[20];
+    printf("Enter infix: ");
+    scanf("%s", in);
+    convert(in, post);
+    printf("Postfix: %s\n", post);
+    return 0;
+}
