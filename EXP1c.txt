@@ -1,0 +1,103 @@
+#include<stdio.h> 
+#include<stdlib.h> 
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *head = NULL, *newnode, *temp;
+
+void create() {
+    newnode = (struct node*)malloc(sizeof(struct node));
+    printf("Enter data: ");
+    scanf("%d", &newnode->data);
+    newnode->next = NULL;
+    if (head == NULL) head = temp = newnode;
+    else temp->next = newnode, temp = newnode;
+}
+
+void display() {
+    for (temp = head; temp != NULL; temp = temp->next)
+        printf("%d\t", temp->data);
+}
+
+void insertatbeg() {
+    newnode = (struct node*)malloc(sizeof(struct node));
+    printf("Enter data: ");
+    scanf("%d", &newnode->data);
+    newnode->next = head;
+    head = newnode;
+}
+
+void insertatend() {
+    newnode = (struct node*)malloc(sizeof(struct node));
+    printf("Enter data: ");
+    scanf("%d", &newnode->data);
+    for (temp = head; temp->next != NULL; temp = temp->next);
+    temp->next = newnode;
+}
+
+void insertatpos() {
+    int pos, i = 1;
+    printf("Enter data: ");
+    newnode = (struct node*)malloc(sizeof(struct node));
+    scanf("%d", &newnode->data);
+    printf("Enter position: ");
+    scanf("%d", &pos);
+    for (temp = head; i < pos - 1; i++) temp = temp->next;
+    newnode->next = temp->next;
+    temp->next = newnode;
+}
+
+void deleteatbeg() {
+    temp = head;
+    head = head->next;
+    free(temp);
+}
+
+void deleteatend() {
+    struct node *prev;
+    for (temp = head; temp->next != NULL; prev = temp, temp = temp->next);
+    prev->next = NULL;
+    free(temp);
+}
+
+void deleteatpos() {
+    int pos, i = 1;
+    struct node *delnode;
+    printf("Enter position: ");
+    scanf("%d", &pos);
+    for (temp = head; i < pos - 1; i++) temp = temp->next;
+    delnode = temp->next;
+    temp->next = delnode->next;
+    free(delnode);
+}
+
+int main() {
+    int choice;
+    while (1) {
+        printf("\n1.Create \n2.Display \n3.Insert at beg \n4.Insert at end \n5.Insert at pos \n6.Delete at beg \n7.Delete at end \n8.Delete at pos \n9.Exit\n");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1: create(); 
+            break;
+            case 2: display(); 
+            break;
+            case 3: insertatbeg(); 
+            break;
+            case 4: insertatend(); 
+            break;
+            case 5: insertatpos(); 
+            break;
+            case 6: deleteatbeg(); 
+            break;
+            case 7: deleteatend(); 
+            break;
+            case 8: deleteatpos(); 
+            break;
+            case 9: exit(0); break;
+            default: printf("Invalid option\n");
+        }
+    }
+}
